@@ -1,0 +1,14 @@
+//Add brand condition sku
+function eveel_print_meta_stuff()
+{
+if( is_product() )
+{
+$product = new WC_Product( get_the_ID() );
+$sku = $product->get_sku();
+echo '<meta property="product:brand" content="Brand">
+      <meta property="product:condition" content="New">
+      <meta property="product:retailer_item_id" content="' .$sku. '">';
+echo $product->get_sku;
+  }
+}
+add_action( 'wp_head', 'eveel_print_meta_stuff' );
