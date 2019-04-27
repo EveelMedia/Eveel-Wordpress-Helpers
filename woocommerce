@@ -12,3 +12,17 @@ echo $product->get_sku;
   }
 }
 add_action( 'wp_head', 'eveel_print_meta_stuff' );
+
+//Add Show All Products to Woocommerce Shortcode */
+function woocommerce_shortcode_display_all_products($args)
+{
+ if(strtolower(@$args['post__in'][0])=='all')
+ {
+  global $wpdb;
+  $args['post__in'] = array();
+  $products = $wpdb->get_results("SELECT ID FROM ".$wpdb->posts." WHERE `post_type`='product'",ARRAY_A);
+  foreach($products as $k => $v) { $args['post__in'][] = $products[$k]['ID']; }
+ }
+ return $args;
+}
+add_filter('woocommerce_shortcode_products_query', 'woocommerce_shortcode_display_all_products');
