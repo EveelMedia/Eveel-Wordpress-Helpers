@@ -22,15 +22,25 @@ $order_quantity = $order->get_item_count();
 <?php
 }
 
-//product visit
 function eveel_pint_product_view()
 {
 if( is_product() )
 {
+$product = new WC_Product( get_the_ID() );
+$sku = $product->get_sku();
+$name = $product->get_title();
+$cat = $product->get_categories():
 ?>
 <script>
- pintrk('track', 'pagevisit', {
- });
+pintrk('track', 'pagevisit', {
+line_items: [
+{
+product_id: '<?php echo $sku ?>',
+product_name: '<?php echo $name ?>',
+product_category: '<?php echo $cat ?>'
+}
+]
+});
 </script>
 <noscript>
  <img height="1" width="1" style="display:none;" alt="" src="https://ct.pinterest.com/v3/?tid=2612744445363&event=pagevisit&noscript=1" />
@@ -39,7 +49,7 @@ if( is_product() )
 }
 }
 add_action( 'wp_footer', 'eveel_pint_product_view' );
-
+        
 //view cart
 function eveel_pint_view_cart()
 {
